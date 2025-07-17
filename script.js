@@ -1,4 +1,4 @@
-function Gameboard() {
+const Game = (function () {
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -34,7 +34,7 @@ function Gameboard() {
         printBoard
     }
 
-}
+})();
 
 function Cell() {
     let cellValue = 0;
@@ -43,5 +43,3 @@ function Cell() {
         setCellValue: (newValue) => cellValue = newValue
     }
 }
-
-const game = Gameboard()
