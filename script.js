@@ -43,3 +43,14 @@ function Cell() {
         setCellValue: (newValue) => cellValue = newValue
     }
 }
+
+const players = {
+    player1: {
+        name: 'Player One',
+        token: 'X'
+    },
+    player2: {
+        name: 'Player Two',
+        token: 'O'
+    }
+};
