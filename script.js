@@ -1,4 +1,4 @@
-const Game = (function () {
+const Gameboard = function () {
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -16,7 +16,7 @@ const Game = (function () {
 
 // checking if a cell is free, and play token in that cell
 
-    const cellAvailable = (row, col) => board[row][col].getCellValue() === 0 ? true : false;
+    const cellAvailable = (row, col) => board[row][col].getCellValue() === '' ? true : false;
 
     const playToken = (row, column, token) =>
         cellAvailable(row, column) == true ? board[row][column].setCellValue(token) : console.log('taken');
@@ -34,23 +34,56 @@ const Game = (function () {
         printBoard
     }
 
-})();
+};
 
 function Cell() {
-    let cellValue = 0;
+    let cellValue = '';
     return {
         getCellValue: () => cellValue,
         setCellValue: (newValue) => cellValue = newValue
     }
 }
 
-const players = {
-    player1: {
-        name: 'Player One',
-        token: 'X'
-    },
-    player2: {
-        name: 'Player Two',
-        token: 'O'
+const GameController = (player1, player2) => {
+    const players = [
+        {
+            name: player1,
+            token: 'X'
+        },
+        {
+            name: player2,
+            token: 'O'
+        }
+    ];
+
+    let currentPlayer = players[0];
+
+    const getActivePlayer = () => currentPlayer;
+
+    const board = Gameboard();
+
+    const playRound = (row, column) => {
+        board.playToken(row, column, currentPlayer.token);
+        //check win
+
+        switchCurrentPlayer()
+        printBoardOut()
     }
-};
+
+    const checkWin = () => {}
+
+    const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
+
+    const printBoardOut = () => {
+        board.printBoard()
+        console.log(`Player ${currentPlayer.name}'s turn.`);
+    }
+
+    printBoardOut()
+
+    return {
+        playRound
+    }
+}
+
+const myGame = GameController('Solomon', 'Player0');
