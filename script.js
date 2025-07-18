@@ -64,13 +64,20 @@ const GameController = (player1, player2) => {
 
     const playRound = (row, column) => {
         board.playToken(row, column, currentPlayer.token);
-        //check win
-
-        switchCurrentPlayer()
-        printBoardOut()
+        checkWin();
+        switchCurrentPlayer();
+        printBoardOut();
     }
 
-    const checkWin = () => {}
+    const checkWin = () => {
+        board.displayBoard().map((row) => {
+                if (row[0].getCellValue() == currentPlayer.token 
+                && row[1].getCellValue() == currentPlayer.token 
+                && row[2].getCellValue() == currentPlayer.token) {
+                    console.log(`${currentPlayer.name} wins`);
+                }
+        });
+    }
 
     const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
 
@@ -79,7 +86,7 @@ const GameController = (player1, player2) => {
         console.log(`Player ${currentPlayer.name}'s turn.`);
     }
 
-    printBoardOut()
+    // printBoardOut();
 
     return {
         playRound
