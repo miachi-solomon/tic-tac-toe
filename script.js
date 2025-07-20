@@ -87,6 +87,31 @@ const GameController = (player1, player2) => {
         const thirdColumns = [row1thirdColumn, row2thirdColumn, row3thirdColumn];
         const allColumns = [firstColumns, secondColumns, thirdColumns];
 
+        const horizontalWin = () => {
+            board.getBoard().map((row) => {
+                if (row.every((cell) => cell.getCellValue() == currentPlayer.token)) {
+                    console.log(`${currentPlayer.name} wins`);
+                }
+            });
+        }
+
+        const verticalWin = (colArray) => {
+            colArray.map((columns) => {
+                if (columns.every((column) => column ==  currentPlayer.token)) {
+                    console.log(`${currentPlayer.name} wins`);
+                }
+            });
+        }
+
+        const diagonalWin = () => {
+            const diag1 = [row1firstColumn, row2secondColumn, row3thirdColumn];
+            const diag2 = [row1thirdColumn, row3firstColumn, row2secondColumn];
+            if ((diag1.every((column) => column == currentPlayer.token) || 
+            (diag2.every((column) => column == currentPlayer.token)))) {
+                console.log(`${currentPlayer.name} wins`);
+            }
+        }
+
         // user wins when three of their token are horizontal or on the same row
         horizontalWin();
 
@@ -97,24 +122,6 @@ const GameController = (player1, player2) => {
         diagonalWin();
     }
 
-    const horizontalWin = () => {
-        board.getBoard().map((row) => {
-            if (row.every((cell) => cell.getCellValue() == currentPlayer.token)) {
-                console.log(`${currentPlayer.name} wins`);
-            }
-        });
-    }
-
-    const verticalWin = (colArray) => {
-        colArray.map((columns) => {
-            if (columns.every((column) => column ==  currentPlayer.token)) {
-                console.log(`${currentPlayer.name} wins`);
-            }
-        });
-    }
-
-    const diagonalWin = () => {}
-
     const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
 
     const printBoardOut = () => {
@@ -122,7 +129,7 @@ const GameController = (player1, player2) => {
         console.log(`Player ${currentPlayer.name}'s turn.`);
     }
 
-    // printBoardOut();
+    printBoardOut();
 
     return {
         playRound
