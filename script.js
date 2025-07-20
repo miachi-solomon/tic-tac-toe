@@ -70,25 +70,6 @@ const GameController = (player1, player2) => {
     }
 
     const checkWin = () => {
-        // user wins when three of their token are horizontal or on the same row
-
-        horizontalWin();
-
-        // user wins when three of their token are vertical or on the same column
-        
-        verticalWin();
-    }
-
-    const horizontalWin = () => {
-        board.getBoard().map((row) => {
-            if (row.every((cell) => cell.getCellValue() == currentPlayer.token)) {
-                console.log(`${currentPlayer.name} wins`);
-            }
-        });
-    }
-
-    const verticalWin = () => {
-        // get every column of the first row
         let row1firstColumn = board.getBoard()[0][0].getCellValue();
         let row1secondColumn = board.getBoard()[0][1].getCellValue();
         let row1thirdColumn = board.getBoard()[0][2].getCellValue();
@@ -106,12 +87,33 @@ const GameController = (player1, player2) => {
         const thirdColumns = [row1thirdColumn, row2thirdColumn, row3thirdColumn];
         const allColumns = [firstColumns, secondColumns, thirdColumns];
 
-        allColumns.map((columns) => {
+        // user wins when three of their token are horizontal or on the same row
+        horizontalWin();
+
+        // user wins when three of their token are vertical or on the same column
+        verticalWin(allColumns);
+
+        // user wins when three of their token are diagonal
+        diagonalWin();
+    }
+
+    const horizontalWin = () => {
+        board.getBoard().map((row) => {
+            if (row.every((cell) => cell.getCellValue() == currentPlayer.token)) {
+                console.log(`${currentPlayer.name} wins`);
+            }
+        });
+    }
+
+    const verticalWin = (colArray) => {
+        colArray.map((columns) => {
             if (columns.every((column) => column ==  currentPlayer.token)) {
                 console.log(`${currentPlayer.name} wins`);
             }
         });
     }
+
+    const diagonalWin = () => {}
 
     const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
 
