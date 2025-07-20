@@ -12,7 +12,7 @@ const Gameboard = function () {
         }
     }
 
-    const displayBoard = () => board;
+    const getBoard = () => board;
 
 // checking if a cell is free, and play token in that cell
 
@@ -29,7 +29,7 @@ const Gameboard = function () {
     }
 
     return {
-        displayBoard,
+        getBoard,
         playToken,
         printBoard
     }
@@ -70,19 +70,53 @@ const GameController = (player1, player2) => {
     }
 
     const checkWin = () => {
-        board.displayBoard().map((row) => {
-                if (row[0].getCellValue() == currentPlayer.token 
-                && row[1].getCellValue() == currentPlayer.token 
-                && row[2].getCellValue() == currentPlayer.token) {
-                    console.log(`${currentPlayer.name} wins`);
-                }
+        // user wins when three of their token are horizontal or on the same row
+
+        horizontalWin();
+
+        // user wins when three of their token are vertical or on the same column
+        
+        verticalWin();
+    }
+
+    const horizontalWin = () => {
+        board.getBoard().map((row) => {
+            if (row.every((cell) => cell.getCellValue() == currentPlayer.token)) {
+                console.log(`${currentPlayer.name} wins`);
+            }
+        });
+    }
+
+    const verticalWin = () => {
+        // get every column of the first row
+        let row1firstColumn = board.getBoard()[0][0].getCellValue();
+        let row1secondColumn = board.getBoard()[0][1].getCellValue();
+        let row1thirdColumn = board.getBoard()[0][2].getCellValue();
+
+        let row2firstColumn = board.getBoard()[1][0].getCellValue();
+        let row2secondColumn = board.getBoard()[1][1].getCellValue();
+        let row2thirdColumn = board.getBoard()[1][2].getCellValue();
+
+        let row3firstColumn = board.getBoard()[2][0].getCellValue();
+        let row3secondColumn = board.getBoard()[2][1].getCellValue();
+        let row3thirdColumn = board.getBoard()[2][2].getCellValue();
+
+        const firstColumns = [row1firstColumn, row2firstColumn, row3firstColumn];
+        const secondColumns = [row1secondColumn, row2secondColumn, row3secondColumn];
+        const thirdColumns = [row1thirdColumn, row2thirdColumn, row3thirdColumn];
+        const allColumns = [firstColumns, secondColumns, thirdColumns];
+
+        allColumns.map((columns) => {
+            if (columns.every((column) => column ==  currentPlayer.token)) {
+                console.log(`${currentPlayer.name} wins`);
+            }
         });
     }
 
     const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
 
     const printBoardOut = () => {
-        board.printBoard()
+        board.printBoard();
         console.log(`Player ${currentPlayer.name}'s turn.`);
     }
 
