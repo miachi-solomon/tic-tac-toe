@@ -1,4 +1,6 @@
 const output = document.querySelector('.output');
+const playerTurnDiv = document.querySelector('.turn');
+
 function Gameboard () {
     const rows = 3;
     const columns = 3;
@@ -71,12 +73,18 @@ function GameController (player1, player2) {
 
     let playerWon = false;
 
+    let matchTie = false;
+
+    const getMatchTie = () => matchTie;
+
+    const getPlayerWon = () => playerWon;
+
     const playRound = (row, column) => {
         board.playToken(row, column, currentPlayer.token);
         checkWin();
 
         if (playerWon) {
-            return; 
+            return;
         } else {
             switchCurrentPlayer();
         }
@@ -84,7 +92,7 @@ function GameController (player1, player2) {
         printBoardOut();
 
         if (board.getBoard().every((row) => row.every((column) => column.getCellValue() != ''))) {
-            console.log('tie');
+            matchTie = true;
         }
     }
 
@@ -144,7 +152,7 @@ function GameController (player1, player2) {
         diagonalWin();
     }
 
-    const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
+    const switchCurrentPlayer = () => currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
 
     const printBoardOut = () => {
         board.printBoard();
@@ -156,14 +164,17 @@ function GameController (player1, player2) {
     return {
         playRound,
         getActivePlayer,
-        getBoard: board.getBoard
+        getBoard: board.getBoard,
+        getPlayerWon,
+        getMatchTie,
     }
 }
 
 function ScreenController () {
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
-    const game = GameController('Miachi', 'Solomon');
+    const game = GameController('Player X', 'Player O');
+    const restart = document.querySelector('.restart-btn');
 
     const updateScreen = () => {
         boardDiv.textContent = '';
@@ -172,6 +183,13 @@ function ScreenController () {
         const activePlayer = game.getActivePlayer();
 
         playerTurnDiv.textContent = `${activePlayer.name}'s turn.`;
+
+        if (game.getPlayerWon()) {
+            playerTurnDiv.textContent = `Congrats! ${activePlayer.name} wins`;
+            boardDiv.removeEventListener('click', boardDivClick);
+        }
+
+        if (game.getMatchTie()) playerTurnDiv.textContent = "It's a tie, restart the game";
 
         board.forEach((row, rowIndex) => {
             row.forEach((column, columnIndex) => {
@@ -185,7 +203,7 @@ function ScreenController () {
         });
     }
 
-    boardDiv.addEventListener('click', (e) => {
+    const boardDivClick = (e) => {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
 
@@ -193,6 +211,12 @@ function ScreenController () {
         game.playRound(selectedRow, selectedColumn);
 
         updateScreen();
+    }
+
+    boardDiv.addEventListener('click', boardDivClick);
+
+    restart.addEventListener('click', () => {
+        ScreenController();
     });
 
     updateScreen();
