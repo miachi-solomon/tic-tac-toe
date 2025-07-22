@@ -66,7 +66,6 @@ const GameController = (player1, player2) => {
 
     const playRound = (row, column) => {
         board.playToken(row, column, currentPlayer.token);
-
         checkWin();
 
         if (playerWon) {
@@ -148,7 +147,8 @@ const GameController = (player1, player2) => {
     printBoardOut();
 
     return {
-        playRound
+        playRound,
+        getActivePlayer
     }
 }
 

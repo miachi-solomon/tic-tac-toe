@@ -1,4 +1,19 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.board {
+    display: grid;
+    width: 500px;
+    height: 500px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    background-color: aqua;
+    border: 1px solid saddlebrown;
+    gap: 10px;
 }
