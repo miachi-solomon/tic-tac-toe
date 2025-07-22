@@ -62,11 +62,24 @@ const GameController = (player1, player2) => {
 
     const board = Gameboard();
 
+    let playerWon = false;
+
     const playRound = (row, column) => {
         board.playToken(row, column, currentPlayer.token);
+
         checkWin();
-        switchCurrentPlayer();
+
+        if (playerWon) {
+            return; 
+        } else {
+            switchCurrentPlayer();
+        }
+
         printBoardOut();
+
+        if (board.getBoard().every((row) => row.every((column) => column.getCellValue() != ''))) {
+            console.log('its a tie!.');
+        }
     }
 
     const checkWin = () => {
@@ -89,8 +102,9 @@ const GameController = (player1, player2) => {
 
         const horizontalWin = () => {
             board.getBoard().map((row) => {
-                if (row.every((cell) => cell.getCellValue() == currentPlayer.token)) {
+                if (row.every((column) => column.getCellValue() == currentPlayer.token)) {
                     console.log(`${currentPlayer.name} wins`);
+                    playerWon = true;
                 }
             });
         }
@@ -99,6 +113,7 @@ const GameController = (player1, player2) => {
             colArray.map((columns) => {
                 if (columns.every((column) => column ==  currentPlayer.token)) {
                     console.log(`${currentPlayer.name} wins`);
+                    playerWon = true;
                 }
             });
         }
@@ -109,6 +124,7 @@ const GameController = (player1, player2) => {
             if ((diag1.every((column) => column == currentPlayer.token) || 
             (diag2.every((column) => column == currentPlayer.token)))) {
                 console.log(`${currentPlayer.name} wins`);
+                playerWon = true;
             }
         }
 
