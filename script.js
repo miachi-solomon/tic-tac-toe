@@ -148,8 +148,47 @@ const GameController = (player1, player2) => {
 
     return {
         playRound,
-        getActivePlayer
+        getActivePlayer,
+        getBoard: board.getBoard
     }
 }
 
-const myGame = GameController('Solomon', 'Player0');
+function ScreenController () {
+    const playerTurnDiv = document.querySelector('.turn');
+    const boardDiv = document.querySelector('.board');
+    const game = GameController('Miachi', 'Solomon');
+
+    const updateScreen = () => {
+        boardDiv.textContent = '';
+
+        const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn.`;
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((column, columnIndex) => {
+                const colButton = document.createElement('button');
+                colButton.classList.add('cell');
+                colButton.dataset.row = rowIndex;
+                colButton.dataset.column = columnIndex
+                colButton.textContent = column.getCellValue();
+                boardDiv.appendChild(colButton);
+            });
+        });
+    }
+
+    boardDiv.addEventListener('click', (e) => {
+        const selectedRow = e.target.dataset.row;
+        const selectedColumn = e.target.dataset.column;
+
+        if (!selectedRow && !selectedColumn) return;
+        game.playRound(selectedRow, selectedColumn);
+
+        updateScreen();
+    });
+
+    updateScreen();
+}
+
+ScreenController(); 

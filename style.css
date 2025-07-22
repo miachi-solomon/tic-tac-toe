@@ -17,3 +17,9 @@ body {
     border: 1px solid saddlebrown;
     gap: 10px;
 }
+
+.cell {
+    font-size: 3rem;
+    text-align: center;
+    cursor: pointer;
+}
