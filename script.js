@@ -1,4 +1,5 @@
-const Gameboard = function () {
+const output = document.querySelector('.output');
+function Gameboard () {
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -18,8 +19,14 @@ const Gameboard = function () {
 
     const cellAvailable = (row, col) => board[row][col].getCellValue() === '' ? true : false;
 
-    const playToken = (row, column, token) =>
-        cellAvailable(row, column) == true ? board[row][column].setCellValue(token) : console.log('taken');
+    const playToken = (row, column, token) => { 
+        if (cellAvailable(row, column)) {
+            board[row][column].setCellValue(token);
+            output.textContent = '';
+        } else {
+            output.textContent = 'Taken';
+        }
+    }
 
 // print board to console
 
@@ -44,7 +51,7 @@ function Cell() {
     }
 }
 
-const GameController = (player1, player2) => {
+function GameController (player1, player2) {
     const players = [
         {
             name: player1,
@@ -77,7 +84,7 @@ const GameController = (player1, player2) => {
         printBoardOut();
 
         if (board.getBoard().every((row) => row.every((column) => column.getCellValue() != ''))) {
-            console.log('its a tie!.');
+            console.log('tie');
         }
     }
 
